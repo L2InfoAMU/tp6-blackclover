@@ -124,15 +124,36 @@ public class Grid implements Iterable<Cell> {
 
     // TODO: Écrire une version correcte de cette méthode.
     private CellState calculateNextState(int rowIndex, int columnIndex) {
+        int red=0, blue=0;
+        List<Cell> list = getNeighbours(rowIndex, columnIndex);
+        for(int i = 0; i < list.size(); i++) {
+            Cell cell = list.get(i);
+            if(cell.getState() == CellState.RED)
+                red++;
+            if(cell.getState() == CellState.BLUE)
+                blue++;
+        }
         switch(getCell(rowIndex, columnIndex).getState()){
-            case ALIVE:
-                if(countAliveNeighbours(rowIndex, columnIndex) == 2 || countAliveNeighbours(rowIndex, columnIndex) == 3)
-                    return CellState.ALIVE;
-                else
-                    return CellState.DEAD;
+            case RED:
+                if(countAliveNeighbours(rowIndex, columnIndex) == 2 || countAliveNeighbours(rowIndex, columnIndex) == 3) {
+                    if(blue > red)
+                        return CellState.BLUE;
+                    return CellState.RED;
+                }
+                return CellState.DEAD;
+            case BLUE:
+                if(countAliveNeighbours(rowIndex, columnIndex) == 2 || countAliveNeighbours(rowIndex, columnIndex) == 3) {
+                    if(red > blue)
+                        return CellState.RED;
+                    return CellState.BLUE;
+                }
+                return CellState.DEAD;
             case DEAD:
-                if(countAliveNeighbours(rowIndex, columnIndex) == 3)
-                    return CellState.ALIVE;
+                if(countAliveNeighbours(rowIndex, columnIndex) == 3) {
+                    if(blue > red)
+                        return CellState.BLUE;
+                    return CellState.RED;
+                }
                 else
                     return CellState.DEAD;
         }
@@ -201,11 +222,21 @@ public class Grid implements Iterable<Cell> {
     void randomGeneration(Random random) {
         for (int rowIndex = 0; rowIndex < getNumberOfRows(); rowIndex++) {
             for (int columnIndex = 0; columnIndex < getNumberOfColumns(); columnIndex++) {
-                boolean r =  random.nextBoolean();
-                if(r)
-                    this.cells[rowIndex][columnIndex].setState(CellState.ALIVE);
-                else
-                    this.cells[rowIndex][columnIndex].setState(CellState.DEAD);
+                int r =  random.nextInt(4);
+                switch(r) {
+                    case 0 :
+                        this.cells[rowIndex][columnIndex].setState(CellState.DEAD);
+                        break;
+                    case 1 :
+                        this.cells[rowIndex][columnIndex].setState(CellState.DEAD);
+                        break;
+                    case 2 :
+                        this.cells[rowIndex][columnIndex].setState(CellState.RED);
+                        break;
+                    case 3 :
+                        this.cells[rowIndex][columnIndex].setState(CellState.BLUE);
+                        break;
+                }
             }
         }
     }
