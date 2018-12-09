@@ -6,8 +6,8 @@ import java.util.Iterator;
  * {@link GridIterator} instances are used to iterate over the cells of a grid.
  */
 public class GridIterator implements Iterator<Cell> {
-    private int rowIndex;
-    private int columnIndex;
+    public int rowIndex;
+    public int columnIndex;
     private Grid grid;
 
     GridIterator(Grid grid) {

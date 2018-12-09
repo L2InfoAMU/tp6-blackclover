@@ -35,6 +35,10 @@ public class GameOfLifeApplication extends Application {
     this(new GameOfLife(new Grid(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS)));
   }
 
+  public static void main(String[] args) {
+    launch(args);
+  }
+
   /**
    * Creates a new {@code GameOfLifeApplication} instance given a {@link GameOfLife} instance.
    *
